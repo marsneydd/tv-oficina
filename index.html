@@ -17,27 +17,26 @@
             align-items: center;
             font-family: sans-serif;
         }
-       #kiosk-video {
+        /* Contenedor del reproductor de Archive.org */
+        #kiosk-container {
             display: none;
             width: 100vw;
             height: 100vh;
-            object-fit: fill;
+        }
+        #kiosk-container iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
         }
         #start-btn {
             padding: 20px 40px;
             font-size: 24px;
             cursor: pointer;
-            background-color: #8B4513;
+            background-color: #8B4513; /* Color café estilo Coffee Bar */
             color: white;
             border: none;
             border-radius: 8px;
             font-weight: bold;
-        }
-        #loading-text {
-            color: white;
-            font-size: 20px;
-            display: none;
-            position: absolute;
         }
     </style>
 </head>
@@ -45,42 +44,25 @@
 
     <!-- Botón para iniciar la pantalla -->
     <button id="start-btn">Iniciar Pantalla</button>
-    <div id="loading-text">Cargando video...</div>
 
-    <!-- Video conectado a Google Drive con enlace directo -->
-    <video id="kiosk-video" src="https://drive.google.com/uc?export=download&id=1RMOIUA1Nohlk09K851mDxsDg1rKlk8O2" loop playsinline muted preload="auto"></video>
+    <!-- Contenedor con tu iframe de Archive.org -->
+    <div id="kiosk-container">
+        <iframe src="https://archive.org/embed/video_20260917" frameborder="0" webkitallowfullscreen="true" mozallowfullscreen="true" allowfullscreen></iframe>
+    </div>
 
     <script>
         const btn = document.getElementById('start-btn');
-        const video = document.getElementById('kiosk-video');
-        const loadingText = document.getElementById('loading-text');
+        const container = document.getElementById('kiosk-container');
 
         btn.addEventListener('click', () => {
-            // Oculta el botón y muestra el texto de carga
+            // Oculta el botón y muestra el video embebido
             btn.style.display = 'none';
-            loadingText.style.display = 'block';
+            container.style.display = 'block';
             
-            // Forzar la carga del video
-            video.load();
-        });
-
-        // Se ejecuta cuando el video ya tiene datos suficientes para reproducirse fluido
-        video.addEventListener('canplaythrough', () => {
-            loadingText.style.display = 'none';
-            video.style.display = 'block';
-            
-            // Inicia la reproducción sin forzar pantalla completa por código
-            video.play().catch(error => {
-                console.error("Error al reproducir:", error);
-                alert("Error al reproducir: " + error.message);
-            });
-        });
-
-        // Por si ocurre algún error descargando desde la TV
-        video.addEventListener('error', (e) => {
-            loadingText.style.display = 'none';
-            alert("No se pudo cargar el video desde Google Drive. Revisa los permisos del enlace.");
-            btn.style.display = 'block';
+            // Intenta poner la página en pantalla completa de forma segura
+            if (document.documentElement.requestFullscreen) {
+                document.documentElement.requestFullscreen().catch(err => console.log(err));
+            }
         });
     </script>
 </body>
