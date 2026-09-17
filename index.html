@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kiosko TV Oficina</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            background-color: black;
+            overflow: hidden; /* Evita que salgan barras de desplazamiento */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        #kiosk-video {
+            display: none;
+            width: 100vw;
+            height: 100vh;
+            object-fit: cover; /* Hace que el video llene toda la pantalla sin perder calidad ni deformarse */
+        }
+        #start-btn {
+            padding: 20px 40px;
+            font-size: 24px;
+            cursor: pointer;
+            background-color: #8B4513; /* Color café para que combine con el Coffee Bar */
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-family: sans-serif;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Botón para iniciar la pantalla -->
+    <button id="start-btn">Iniciar Pantalla</button>
+
+    <!-- Aquí está conectado tu video. Fíjate que dice src="video.mp4" -->
+    <video id="kiosk-video" src="video.mp4" loop playsinline muted></video>
+
+    <script>
+        const btn = document.getElementById('start-btn');
+        const video = document.getElementById('kiosk-video');
+
+        btn.addEventListener('click', () => {
+            // Oculta el botón y muestra el video
+            btn.style.display = 'none';
+            video.style.display = 'block';
+            
+            // Intenta poner la pantalla completa automáticamente
+            if (document.documentElement.requestFullscreen) {
+                document.documentElement.requestFullscreen();
+            }
+            
+            // Inicia la reproducción
+            video.play();
+        });
+    </script>
+</body>
+</html>
